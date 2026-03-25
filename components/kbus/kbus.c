@@ -8,6 +8,7 @@ typedef struct
 } kbus_handle_t;
 
 static QueueHandle_t uart_queue;
+static QueueHandle_t kbus_queue;
 
 static kbus_handle_t kbus_handle = {0};
 static kbus_config_t kbus_config = {0};
@@ -17,6 +18,7 @@ static ring_buf_t rb;
 static bool kbus_parse(const uint8_t *buf, uint16_t buf_len, kbus_frame_t *frame);
 static uint8_t kbus_calculate_crc(const uint8_t *buf, uint16_t len);
 static void uart_task(void *args);
+static void kbus_task(void *args);
 
 esp_err_t kbus_init(kbus_config_t *config)
 {
@@ -68,11 +70,6 @@ static bool kbus_parse(const uint8_t *buf, uint16_t buf_len, kbus_frame_t *frame
         return false;
     }
 
-    // Parse K-Bus frame structure:
-    // Byte 0: SRC
-    // Byte 1: LEN (DST + CMD + DATA + CRC)
-    // Bytes 2 to (2+LEN-1): DST, CMD, DATA, CRC
-
     uint8_t src = buf[0];
     uint8_t len = buf[1];
 
@@ -101,8 +98,6 @@ static bool kbus_parse(const uint8_t *buf, uint16_t buf_len, kbus_frame_t *frame
         return false;
     }
 
-    // Calculate CRC for entire frame except CRC itself
-    // CRC = XOR of all bytes: SRC + LEN + DST + CMD + DATA
     uint8_t crc_calc = kbus_calculate_crc(buf, frame_total - 1);
 
     if (crc_calc != crc_rx)
@@ -183,7 +178,7 @@ static void uart_task(void *args)
                     {
                         if (kbus_handle.on_recv != NULL)
                         {
-                            kbus_handle.on_recv(&frame);
+                            xQueueSendFromISR(kbus_queue, &frame, NULL);
                         }
                     }
                 }
@@ -222,52 +217,37 @@ static void uart_task(void *args)
 
 esp_err_t kbus_send(uint8_t src, uint8_t dst, uint8_t cmd, const uint8_t *data, uint8_t data_len)
 {
-    // Validate data length (max 253 bytes of data)
     if (data_len > 253)
     {
         ESP_LOGE("KBUS", "Data length too long: %d", data_len);
         return ESP_ERR_INVALID_ARG;
     }
 
-    // Validate pointers
     if (data == NULL && data_len > 0)
     {
         ESP_LOGE("KBUS", "Data pointer is NULL but data_len > 0");
         return ESP_ERR_INVALID_ARG;
     }
 
-    // Calculate frame structure:
-    // Byte 0: SRC
-    // Byte 1: LEN (DST + CMD + DATA + CRC)
-    // Byte 2: DST
-    // Byte 3: CMD
-    // Bytes 4 to 4+data_len-1: data
-    // Last byte: CRC
-
-    uint8_t len = 3 + data_len; // LEN = DST + CMD + CRC + DATA
+    uint8_t len = 3 + data_len;
     uint8_t frame_buf[258];
-    uint8_t frame_size = 2 + len; // SRC + LEN + (DST + CMD + DATA + CRC)
+    uint8_t frame_size = 2 + len;
 
     frame_buf[0] = src;
     frame_buf[1] = len;
     frame_buf[2] = dst;
     frame_buf[3] = cmd;
 
-    // Copy data if present
     if (data_len > 0)
     {
         memcpy(&frame_buf[4], data, data_len);
     }
 
-    // Calculate CRC for entire frame except CRC itself
-    // CRC = XOR of all bytes: SRC + LEN + DST + CMD + DATA
     uint8_t crc = kbus_calculate_crc(frame_buf, 2 + len - 1);
     frame_buf[frame_size - 1] = crc;
 
-    // Send via UART
     uart_write_bytes(kbus_config.uart_num, (const char *)frame_buf, frame_size);
 
-    // Create frame structure for callback
     kbus_frame_t sent_frame;
     sent_frame.src = src;
     sent_frame.len = len;
@@ -280,11 +260,27 @@ esp_err_t kbus_send(uint8_t src, uint8_t dst, uint8_t cmd, const uint8_t *data, 
         memcpy(sent_frame.data, data, data_len);
     }
 
-    // Call send callback if registered
     if (kbus_handle.on_send != NULL)
     {
         kbus_handle.on_send(&sent_frame);
     }
 
     return ESP_OK;
+}
+
+static void kbus_task(void *args)
+{
+    kbus_frame_t frame;
+
+    while (1)
+    {
+        if (xQueueReceive(kbus_queue, &frame, portMAX_DELAY))
+        {
+            if (kbus_handle.on_recv != NULL)
+            {
+                kbus_handle.on_recv(&frame);
+            }
+        }
+    }
+    vTaskDelete(NULL);
 }
