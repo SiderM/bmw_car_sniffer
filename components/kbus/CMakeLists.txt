@@ -1,0 +1,12 @@
+idf_component_register(
+SRCS 
+    "kbus.c"
+    "ring_buf.c"
+INCLUDE_DIRS 
+    "include"
+PRIV_INCLUDE_DIRS 
+    "priv_include"
+REQUIRES
+    "freertos"
+    "driver"
+)

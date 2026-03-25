@@ -1,0 +1,11 @@
+idf_component_register(
+SRCS 
+    "display.c"
+INCLUDE_DIRS 
+    "include"
+REQUIRES
+    "driver"
+    "esp_lcd_jd9365"
+    "esp_lcd_touch_gt911"
+    "esp_lvgl_adapter"
+)

@@ -1,0 +1,18 @@
+idf_component_register(
+SRCS
+    "screens.c"
+    "subjects.c"
+    "ui.c"
+    "fonts/ui_font_ubuntu_22.c"
+    "fonts/ui_font_ubuntu_24.c"
+    "fonts/ui_font_ubuntu_36.c"
+    "fonts/ui_font_ubuntu_42.c"
+    "screens/home.c"
+    "widgets/engine_tab.c"
+    "widgets/transmission_tab.c"
+    "widgets/body_tab.c"
+INCLUDE_DIRS 
+    "include"
+REQUIRES
+    "esp_lvgl_adapter"
+)
