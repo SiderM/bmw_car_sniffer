@@ -17,7 +17,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Закрыта");
+                lv_label_bind_text(obj, &subjects.door_front_left, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -36,7 +36,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Закрыта");
+                lv_label_bind_text(obj, &subjects.door_front_right, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -54,7 +54,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Закрыт");
+                lv_label_bind_text(obj, &subjects.front_lid, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -73,7 +73,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Закрыта");
+                lv_label_bind_text(obj, &subjects.door_rear_left, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -92,7 +92,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Закрыта");
+                lv_label_bind_text(obj, &subjects.door_rear_right, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -110,7 +110,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Закрыт");
+                lv_label_bind_text(obj, &subjects.rear_lid, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -129,7 +129,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Выключены");
+                lv_label_bind_text(obj, &subjects.parking, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -147,7 +147,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Выключен");
+                lv_label_bind_text(obj, &subjects.beam_low, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -165,7 +165,7 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Выключен");
+                lv_label_bind_text(obj, &subjects.beam_high, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -178,13 +178,51 @@ void ui_widget_body_tab_create(lv_obj_t *parent)
             lv_obj_t *parent = obj;
             {
                 lv_obj_t *obj = lv_label_create(parent);
+                lv_label_set_text(obj, "Передние ПТФ");
+                lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_obj_align(obj, LV_ALIGN_TOP_MID, 0, 0);
+            }
+            {
+                lv_obj_t *obj = lv_label_create(parent);
+                lv_label_bind_text(obj, &subjects.fog_front, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_obj_center(obj);
+            }
+        }
+    }
+    {
+        lv_obj_t *obj = lv_obj_create(parent);
+        lv_obj_set_grid_cell(obj, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_STRETCH, 3, 1);
+        {
+            lv_obj_t *parent = obj;
+            {
+                lv_obj_t *obj = lv_label_create(parent);
+                lv_label_set_text(obj, "Задние ПТФ");
+                lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_obj_align(obj, LV_ALIGN_TOP_MID, 0, 0);
+            }
+            {
+                lv_obj_t *obj = lv_label_create(parent);
+                lv_label_bind_text(obj, &subjects.fog_rear, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_obj_center(obj);
+            }
+        }
+    }
+    {
+        lv_obj_t *obj = lv_obj_create(parent);
+        lv_obj_set_grid_cell(obj, LV_GRID_ALIGN_STRETCH, 2, 1, LV_GRID_ALIGN_STRETCH, 3, 1);
+        {
+            lv_obj_t *parent = obj;
+            {
+                lv_obj_t *obj = lv_label_create(parent);
                 lv_label_set_text(obj, "Температура\n на улице");
                 lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_align(obj, LV_ALIGN_TOP_MID, 0, 0);
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "0");
+                lv_label_bind_text(obj, &subjects.outside_temp, "%d");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }

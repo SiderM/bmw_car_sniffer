@@ -16,8 +16,8 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Нет");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.abs, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }
@@ -34,8 +34,8 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Нет");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.dsc, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }
@@ -52,7 +52,7 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Норма");
+                lv_label_bind_text(obj, &subjects.break_fluid, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -71,7 +71,7 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Норма");
+                lv_label_bind_text(obj, &subjects.break_pads, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -89,7 +89,7 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "0");
+                lv_label_bind_text(obj, &subjects.speed, "%d");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -107,8 +107,8 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "P");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.gear, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }
@@ -126,7 +126,7 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Выкл.");
+                lv_label_bind_text(obj, &subjects.handbreak, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -134,7 +134,7 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
     }
     {
         lv_obj_t *obj = lv_obj_create(parent);
-        lv_obj_set_grid_cell(obj, LV_GRID_ALIGN_STRETCH, 0, 1, LV_GRID_ALIGN_STRETCH, 2, 1);
+        lv_obj_set_grid_cell(obj, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_STRETCH, 2, 1);
         lv_obj_set_flag(obj, LV_OBJ_FLAG_SCROLLABLE, LV_PART_MAIN | LV_STATE_DEFAULT);
         {
             lv_obj_t *parent = obj;
@@ -145,15 +145,15 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Нет");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.gearbox, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }
     }
     {
         lv_obj_t *obj = lv_obj_create(parent);
-        lv_obj_set_grid_cell(obj, LV_GRID_ALIGN_STRETCH, 0, 1, LV_GRID_ALIGN_STRETCH, 2, 1);
+        lv_obj_set_grid_cell(obj, LV_GRID_ALIGN_STRETCH, 2, 1, LV_GRID_ALIGN_STRETCH, 2, 1);
         lv_obj_set_flag(obj, LV_OBJ_FLAG_SCROLLABLE, LV_PART_MAIN | LV_STATE_DEFAULT);
         {
             lv_obj_t *parent = obj;
@@ -164,8 +164,8 @@ void ui_widget_transmission_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "0");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.odometer, "%d");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }

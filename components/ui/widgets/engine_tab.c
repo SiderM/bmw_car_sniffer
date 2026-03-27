@@ -1,13 +1,12 @@
 #include "widgets.h"
 #include "fonts.h"
 #include "subjects.h"
-#include "esp_random.h"
 
 static lv_obj_t *rpm_chart;
 
 static void ui_update_timer(lv_timer_t *timer)
 {
-    lv_chart_set_next_value(rpm_chart, lv_chart_get_series_next(rpm_chart, NULL), esp_random() % 7000);
+    lv_chart_set_next_value(rpm_chart, lv_chart_get_series_next(rpm_chart, NULL), lv_subject_get_int(&subjects.rpm));
 }
 
 void ui_widget_engine_tab_create(lv_obj_t *parent)
@@ -45,7 +44,7 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Выключен");
+                lv_label_bind_text(obj, &subjects.engine, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -63,8 +62,8 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Нет");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.check, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }
@@ -93,7 +92,7 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
                     lv_obj_t *parent = obj;
                     {
                         lv_obj_t *obj = lv_label_create(parent);
-                        lv_label_set_text(obj, "0");
+                        lv_label_bind_text(obj, &subjects.rpm, "%d");
                         lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
                         lv_obj_center(obj);
                     }
@@ -113,8 +112,8 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Нет");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.oil_pressure, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }
@@ -131,7 +130,7 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "0");
+                lv_label_bind_text(obj, &subjects.coolant_temp, "%d");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -149,8 +148,8 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Нет");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.eml, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }
@@ -167,8 +166,8 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Нет");
-                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_label_bind_text(obj, &subjects.battery, "%s");
+                lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
         }
@@ -185,7 +184,7 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Норма");
+                lv_label_bind_text(obj, &subjects.coolant_level, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -203,7 +202,7 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "Норма");
+                lv_label_bind_text(obj, &subjects.oil_level, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
@@ -221,7 +220,7 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_set_text(obj, "0");
+                lv_label_bind_text(obj, &subjects.fuel_liters, "%d");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_42, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }
