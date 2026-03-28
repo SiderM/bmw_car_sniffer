@@ -8,6 +8,7 @@
 #include "driver/uart.h"
 #include "esp_err.h"
 #include "esp_log.h"
+#include "kbus_defs.h"
 
 typedef struct
 {
@@ -25,9 +26,6 @@ typedef struct
     uart_port_t uart_num;
     gpio_num_t uart_rx_io;
     gpio_num_t uart_tx_io;
-    int rx_buf_size;
-    int tx_buf_size;
-    int queue_size;
 } kbus_config_t;
 
 typedef void (*kbus_recv_cb_t)(const kbus_frame_t *frame);

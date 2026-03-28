@@ -28,8 +28,8 @@ typedef struct
     lv_subject_t gearbox;
     lv_subject_t odometer;
     // Кузов
-    lv_subject_t door_front_left;
-    lv_subject_t door_front_right;
+    lv_subject_t door_driver;
+    lv_subject_t door_passenger;
     lv_subject_t front_lid;
     lv_subject_t door_rear_left;
     lv_subject_t door_rear_right;
@@ -39,7 +39,7 @@ typedef struct
     lv_subject_t beam_high;
     lv_subject_t fog_front;
     lv_subject_t fog_rear;
-    lv_subject_t outside_temp;
+    lv_subject_t ambient;
 } subjects_t;
 
 extern subjects_t subjects;

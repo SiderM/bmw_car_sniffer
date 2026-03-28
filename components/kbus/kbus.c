@@ -36,7 +36,7 @@ esp_err_t kbus_init(kbus_config_t *config)
     uart_param_config(kbus_config.uart_num, &uart_config);
     uart_set_pin(kbus_config.uart_num, kbus_config.uart_tx_io, kbus_config.uart_rx_io, GPIO_NUM_NC, GPIO_NUM_NC);
     // uart_set_rx_timeout(kbus_config.uart_num, 10);
-    uart_driver_install(kbus_config.uart_num, kbus_config.rx_buf_size, kbus_config.tx_buf_size, kbus_config.queue_size, &uart_queue, 0);
+    uart_driver_install(kbus_config.uart_num, 2048, 1024, 32, &uart_queue, 0);
 
     xTaskCreate(uart_task, "uart_task", 4096, NULL, 5, NULL);
 
@@ -134,14 +134,14 @@ static uint8_t kbus_calculate_crc(const uint8_t *buf, uint16_t len)
 static void uart_task(void *args)
 {
     uart_event_t event;
-    uint8_t *dtmp = (uint8_t *)malloc(kbus_config.rx_buf_size);
+    uint8_t *dtmp = (uint8_t *)malloc(2048);
     assert(dtmp);
 
     while (1)
     {
         if (xQueueReceive(uart_queue, &event, portMAX_DELAY))
         {
-            bzero(dtmp, kbus_config.rx_buf_size);
+            bzero(dtmp, 2048);
             switch (event.type)
             {
             case UART_DATA:
