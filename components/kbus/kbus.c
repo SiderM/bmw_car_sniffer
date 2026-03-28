@@ -181,7 +181,7 @@ static void uart_task(void *args)
                     {
                         if (kbus_handle.on_recv != NULL)
                         {
-                            xQueueSend(kbus_queue, &frame, NULL);
+                            xQueueSend(kbus_queue, &frame, 0);
                         }
                     }
                 }
