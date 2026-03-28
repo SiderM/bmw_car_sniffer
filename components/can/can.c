@@ -45,6 +45,7 @@ void can_init(can_config_t *config)
     twai_node_enable(twai_node_handle);
 
     twai_queue = xQueueCreate(40, sizeof(can_frame_t));
+
     xTaskCreate(twai_task, "twai_task", 4096, NULL, 5, NULL);
 }
 

@@ -38,6 +38,9 @@ esp_err_t kbus_init(kbus_config_t *config)
     // uart_set_rx_timeout(kbus_config.uart_num, 10);
     uart_driver_install(kbus_config.uart_num, 2048, 1024, 32, &uart_queue, 0);
 
+    kbus_queue = xQueueCreate(40, sizeof(kbus_frame_t));
+
+    xTaskCreate(kbus_task, "kbus_task", 4096, NULL, 5, NULL);
     xTaskCreate(uart_task, "uart_task", 4096, NULL, 5, NULL);
 
     return ESP_OK;
@@ -178,7 +181,7 @@ static void uart_task(void *args)
                     {
                         if (kbus_handle.on_recv != NULL)
                         {
-                            xQueueSendFromISR(kbus_queue, &frame, NULL);
+                            xQueueSend(kbus_queue, &frame, NULL);
                         }
                     }
                 }
