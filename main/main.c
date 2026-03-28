@@ -10,8 +10,60 @@ static void kbus_on_recv(const kbus_frame_t *frame)
 
     switch (frame->cmd)
     {
+    case KBUS_CMD_SENSORS:
+        esp_lv_adapter_lock(-1);
+        lv_subject_copy_string(&subjects.handbreak, (frame->data[0] & HANDBRAKE) ? "Вкл." : "Выкл.");
+        lv_subject_copy_string(&subjects.oil_pressure, (frame->data[0] & OIL_PRESSURE) ? "Норма" : "Нет");
+        lv_subject_copy_string(&subjects.break_pads, (frame->data[0] & BRAKE_PADS) ? "Норма" : "Износ");
+        lv_subject_copy_string(&subjects.transmission, (frame->data[0] & TRANSMISSION) ? "Норма" : "Ошибка");
+
+        if (frame->data[1] & GEAR_PARK)
+        {
+            lv_subject_copy_string(&subjects.gear, "P");
+        }
+        else if (frame->data[1] & GEAR_REVERSE)
+        {
+            lv_subject_copy_string(&subjects.gear, "R");
+        }
+        else if (frame->data[1] & GEAR_NEUTRAL)
+        {
+            lv_subject_copy_string(&subjects.gear, "N");
+        }
+        else if (frame->data[1] & GEAR_DRIVE)
+        {
+            lv_subject_copy_string(&subjects.gear, "D");
+        }
+        else if (frame->data[1] & GEAR_FIRST)
+        {
+            lv_subject_copy_string(&subjects.gear, "M1");
+        }
+        else if (frame->data[1] & GEAR_SECOND)
+        {
+            lv_subject_copy_string(&subjects.gear, "M2");
+        }
+        else if (frame->data[1] & GEAR_THIRD)
+        {
+            lv_subject_copy_string(&subjects.gear, "M3");
+        }
+        else if (frame->data[1] & GEAR_FOURTH)
+        {
+            lv_subject_copy_string(&subjects.gear, "M4");
+        }
+        else if (frame->data[1] & GEAR_FIFTH)
+        {
+            lv_subject_copy_string(&subjects.gear, "M5");
+        }
+        esp_lv_adapter_unlock();
+        break;
+    case KBUS_CMD_ODOMETER:
+        esp_lv_adapter_lock(-1);
+        lv_subject_set_int(&subjects.mileage, (frame->data[2] * 655536) + (frame->data[1] * 256) + frame->data[0]);
+        esp_lv_adapter_unlock();
+        break;
     case KBUS_CMD_TEMPERATURE:
+        esp_lv_adapter_lock(-1);
         lv_subject_set_int(&subjects.ambient, frame->data[0]);
+        esp_lv_adapter_unlock();
         break;
     case KBUS_CMD_CLUSTER_INDICATORS:
         lv_subject_copy_string(&subjects.fog_rear, (frame->data[0] & FOG_REAR) ? "Вкл." : "Выкл.");
@@ -19,6 +71,7 @@ static void kbus_on_recv(const kbus_frame_t *frame)
         lv_subject_copy_string(&subjects.beam_high, (frame->data[0] & BEAM_HIGH) ? "Вкл." : "Выкл.");
         lv_subject_copy_string(&subjects.beam_low, (frame->data[0] & BEAM_LOW) ? "Вкл." : "Выкл.");
         lv_subject_copy_string(&subjects.parking, (frame->data[0] & PARKING) ? "Вкл." : "Выкл.");
+        esp_lv_adapter_unlock();
         break;
     case KBUS_CMD_INSTRUMENT_BACKLIGHT:
         display_brightness_set(frame->data[0]);
@@ -27,8 +80,8 @@ static void kbus_on_recv(const kbus_frame_t *frame)
         esp_lv_adapter_lock(-1);
         lv_subject_copy_string(&subjects.door_driver, (frame->data[0] & DOOR_DRIVER) ? "Открыта" : "Закрыта");
         lv_subject_copy_string(&subjects.door_passenger, (frame->data[0] & DOOR_PASSENGER) ? "Открыта" : "Закрыта");
-        lv_subject_copy_string(&subjects.door_rear_left, (frame->data[0] & DOOR_REAR_LH) ? "Открыта" : "Закрыта");
-        lv_subject_copy_string(&subjects.door_rear_right, (frame->data[0] & DOOR_REAR_RH) ? "Открыта" : "Закрыта");
+        lv_subject_copy_string(&subjects.door_rear_lh, (frame->data[0] & DOOR_REAR_LH) ? "Открыта" : "Закрыта");
+        lv_subject_copy_string(&subjects.door_rear_rh, (frame->data[0] & DOOR_REAR_RH) ? "Открыта" : "Закрыта");
 
         lv_subject_copy_string(&subjects.rear_lid, (frame->data[1] & REAR_LID) ? "Открыт" : "Закрыт");
         lv_subject_copy_string(&subjects.front_lid, (frame->data[1] & FRONT_LID) ? "Открыт" : "Закрыт");

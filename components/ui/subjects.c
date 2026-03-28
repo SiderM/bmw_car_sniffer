@@ -19,14 +19,14 @@ static char break_fluid[32];
 static char break_pads[32];
 static char gear[32];
 static char handbreak[32];
-static char gearbox[32];
+static char transmission[32];
 
 // Кузов
 static char door_driver[32];
 static char door_passenger[32];
 static char front_lid[32];
-static char door_rear_left[32];
-static char door_rear_right[32];
+static char door_rear_lh[32];
+static char door_rear_rh[32];
 static char rear_lid[32];
 static char parking[32];
 static char beam_low[32];
@@ -57,15 +57,15 @@ void ui_subjects_init(void)
     lv_subject_init_int(&subjects.speed, 0);
     lv_subject_init_string(&subjects.gear, gear, NULL, sizeof(gear), "---");
     lv_subject_init_string(&subjects.handbreak, handbreak, NULL, sizeof(handbreak), "---");
-    lv_subject_init_string(&subjects.gearbox, gearbox, NULL, sizeof(gearbox), "---");
-    lv_subject_init_int(&subjects.odometer, 0);
+    lv_subject_init_string(&subjects.transmission, transmission, NULL, sizeof(transmission), "---");
+    lv_subject_init_int(&subjects.mileage, 0);
 
     // Кузов
     lv_subject_init_string(&subjects.door_driver, door_driver, NULL, sizeof(door_driver), "---");
     lv_subject_init_string(&subjects.door_passenger, door_passenger, NULL, sizeof(door_passenger), "---");
     lv_subject_init_string(&subjects.front_lid, front_lid, NULL, sizeof(front_lid), "---");
-    lv_subject_init_string(&subjects.door_rear_left, door_rear_left, NULL, sizeof(door_rear_left), "---");
-    lv_subject_init_string(&subjects.door_rear_right, door_rear_right, NULL, sizeof(door_rear_right), "---");
+    lv_subject_init_string(&subjects.door_rear_lh, door_rear_lh, NULL, sizeof(door_rear_lh), "---");
+    lv_subject_init_string(&subjects.door_rear_rh, door_rear_rh, NULL, sizeof(door_rear_rh), "---");
     lv_subject_init_string(&subjects.rear_lid, rear_lid, NULL, sizeof(rear_lid), "---");
     lv_subject_init_string(&subjects.parking, parking, NULL, sizeof(parking), "---");
     lv_subject_init_string(&subjects.beam_low, beam_low, NULL, sizeof(beam_low), "---");

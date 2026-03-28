@@ -25,14 +25,14 @@ typedef struct
     lv_subject_t speed;
     lv_subject_t gear;
     lv_subject_t handbreak;
-    lv_subject_t gearbox;
-    lv_subject_t odometer;
+    lv_subject_t transmission;
+    lv_subject_t mileage;
     // Кузов
     lv_subject_t door_driver;
     lv_subject_t door_passenger;
     lv_subject_t front_lid;
-    lv_subject_t door_rear_left;
-    lv_subject_t door_rear_right;
+    lv_subject_t door_rear_lh;
+    lv_subject_t door_rear_rh;
     lv_subject_t rear_lid;
     lv_subject_t parking;
     lv_subject_t beam_low;
