@@ -27,6 +27,7 @@ typedef struct
     lv_subject_t handbreak;
     lv_subject_t transmission;
     lv_subject_t mileage;
+    lv_subject_t angle;
     // Кузов
     lv_subject_t door_driver;
     lv_subject_t door_passenger;

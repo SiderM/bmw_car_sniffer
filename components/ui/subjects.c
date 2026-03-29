@@ -59,6 +59,7 @@ void ui_subjects_init(void)
     lv_subject_init_string(&subjects.handbreak, handbreak, NULL, sizeof(handbreak), "---");
     lv_subject_init_string(&subjects.transmission, transmission, NULL, sizeof(transmission), "---");
     lv_subject_init_int(&subjects.mileage, 0);
+    lv_subject_init_int(&subjects.angle, 0);
 
     // Кузов
     lv_subject_init_string(&subjects.door_driver, door_driver, NULL, sizeof(door_driver), "---");

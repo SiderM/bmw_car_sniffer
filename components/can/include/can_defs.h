@@ -2,6 +2,7 @@
 #define CAN_DEFS_H
 
 #define CAN_ID_ASC1 0x153
+#define CAN_ID_SWS1 0x1F5
 #define CAN_ID_DME1 0x316
 #define CAN_ID_DME4 0x545
 #define CAN_ID_IKE1 0x613

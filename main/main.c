@@ -135,6 +135,15 @@ static void can_on_recv(const can_frame_t *frame)
         lv_subject_set_int(&subjects.speed, (int)speed_kmh);
         esp_lv_adapter_unlock();
         break;
+    case CAN_ID_SWS1:
+        uint16_t word_a = (uint16_t)frame->data[0] | ((uint16_t)frame->data[1] << 8);
+        uint16_t angle_raw = word_a & 0x7FFF;
+        uint8_t angle_sign = (word_a >> 15) & 1;
+        float angle_deg = (angle_sign ? -1.0f : 1.0f) * angle_raw * 0.045f;
+        esp_lv_adapter_lock(-1);
+        lv_subject_set_int(&subjects.angle, (int)angle_deg);
+        esp_lv_adapter_unlock();
+        break;
     case CAN_ID_DME1:
         uint16_t rpm_raw = ((uint16_t)frame->data[3] << 8) | frame->data[2];
         float rpm = rpm_raw / 6.4f;
