@@ -151,7 +151,6 @@ static void can_on_recv(const can_frame_t *frame)
         break;
     case CAN_ID_IKE1:
         float fuel_percent = 0.0f;
-        float fuel_liters = 0.0f;
         bool low_fuel = false;
         bool empty = false;
 
