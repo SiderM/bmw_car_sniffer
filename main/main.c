@@ -10,12 +10,33 @@ static void kbus_on_recv(const kbus_frame_t *frame)
 
     switch (frame->cmd)
     {
+    case KBUS_CMD_IGNITION:
+        esp_lv_adapter_lock(-1);
+        if (frame->data[0] & IGNITION_KL_30)
+        {
+            lv_subject_copy_string(&subjects.ignition, "KL_30");
+        }
+        else if (frame->data[0] & IGNITION_KL_R)
+        {
+            lv_subject_copy_string(&subjects.ignition, "KL_R");
+        }
+        else if (frame->data[0] & IGNITION_KL_15)
+        {
+            lv_subject_copy_string(&subjects.ignition, "KL_15");
+        }
+        else if (frame->data[0] & IGNITION_KL_50)
+        {
+            lv_subject_copy_string(&subjects.ignition, "KL_50");
+        }
+        esp_lv_adapter_unlock();
+        break;
     case KBUS_CMD_SENSORS:
         esp_lv_adapter_lock(-1);
         lv_subject_copy_string(&subjects.handbreak, (frame->data[0] & HANDBRAKE) ? "Вкл." : "Выкл.");
         lv_subject_copy_string(&subjects.oil_pressure, (frame->data[0] & OIL_PRESSURE) ? "Норма" : "Нет");
         lv_subject_copy_string(&subjects.break_pads, (frame->data[0] & BRAKE_PADS) ? "Норма" : "Износ");
         lv_subject_copy_string(&subjects.transmission, (frame->data[0] & TRANSMISSION) ? "Норма" : "Ошибка");
+        lv_subject_copy_string(&subjects.engine, (frame->data[1] & ENGINE) ? "Работает" : "Выкл.");
 
         if (frame->data[1] & GEAR_PARK)
         {
@@ -63,6 +84,13 @@ static void kbus_on_recv(const kbus_frame_t *frame)
     case KBUS_CMD_TEMPERATURE:
         esp_lv_adapter_lock(-1);
         lv_subject_set_int(&subjects.ambient, frame->data[0]);
+        lv_subject_set_int(&subjects.coolant_temp, frame->data[1]);
+        esp_lv_adapter_unlock();
+        break;
+    case KBUS_CMD_CHECK_CONTROL_STATUS:
+        esp_lv_adapter_lock(-1);
+        lv_subject_copy_string(&subjects.break_fluid, (frame->data[0] & BRAKE_FLUID) ? "Норма" : "Низкий");
+        lv_subject_copy_string(&subjects.oil_level, (frame->data[0] & OIL_LEVEL) ? "Норма" : "Низкий");
         esp_lv_adapter_unlock();
         break;
     case KBUS_CMD_CLUSTER_INDICATORS:
