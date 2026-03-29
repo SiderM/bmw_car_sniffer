@@ -13,7 +13,7 @@ typedef struct
     lv_subject_t oil_pressure;
     lv_subject_t coolant_temp;
     lv_subject_t eml;
-    lv_subject_t battery;
+    lv_subject_t charge;
     lv_subject_t coolant_level;
     lv_subject_t oil_level;
     lv_subject_t fuel_liters;

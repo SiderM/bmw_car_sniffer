@@ -125,6 +125,64 @@ static void can_on_recv(const can_frame_t *frame)
 {
     ESP_LOGI("CAN_RX", "ID: 0x%03X", frame->id);
     ESP_LOG_BUFFER_HEX("CAN_RX", frame->data, frame->data_len);
+
+    switch (frame->id)
+    {
+    case CAN_ID_ASC1:
+        uint16_t speed_raw = ((uint16_t)frame->data[1] << 8 | frame->data[2]) >> 4;
+        float speed_kmh = speed_raw / 8.0f;
+        esp_lv_adapter_lock(-1);
+        lv_subject_set_int(&subjects.speed, (int)speed_kmh);
+        esp_lv_adapter_unlock();
+        break;
+    case CAN_ID_DME1:
+        uint16_t rpm_raw = ((uint16_t)frame->data[3] << 8) | frame->data[2];
+        float rpm = rpm_raw / 6.4f;
+        esp_lv_adapter_lock(-1);
+        lv_subject_set_int(&subjects.rpm, (int)rpm);
+        esp_lv_adapter_unlock();
+        break;
+    case CAN_ID_DME4:
+        esp_lv_adapter_lock(-1);
+        lv_subject_copy_string(&subjects.check, (frame->data[0] & 0x02) ? "Вкл." : "Выкл.");
+        lv_subject_copy_string(&subjects.eml, (frame->data[0] & 0x10) ? "Вкл." : "Выкл.");
+        lv_subject_copy_string(&subjects.charge, (frame->data[5] & 0x01) ? "Нет" : "Есть");
+        esp_lv_adapter_unlock();
+        break;
+    case CAN_ID_IKE1:
+        float fuel_percent = 0.0f;
+        float fuel_liters = 0.0f;
+        bool low_fuel = false;
+        bool empty = false;
+
+        if (frame->data[2] >= 0x80)
+        {
+            // Зона ниже лампы: 0x80 (пусто) → 0x87 (граница)
+            float low_ceil = (float)(0x08 - 0) * 100.0f / (0x39 - 0);
+            fuel_percent = ((float)(frame->data[2] - 0x80) / 7.0f) * low_ceil;
+            low_fuel = true;
+            empty = (frame->data[2] == 0x80);
+        }
+        else if (frame->data[2] >= 0x08)
+        {
+            // Основной диапазон: 0x08 (лампа) → 0x39 (полный)
+            fuel_percent = (float)(frame->data[2] - 0x08) / (float)(0x39 - 0x08) * 100.0f;
+            low_fuel = (frame->data[2] == 0x08);
+        }
+        else
+        {
+            fuel_percent = 0.0f;
+            low_fuel = true;
+            empty = true;
+        }
+        esp_lv_adapter_lock(-1);
+        lv_subject_set_int(&subjects.fuel_liters, (int)(fuel_percent * 60.0f / 100.0f));
+        esp_lv_adapter_unlock();
+        break;
+
+    default:
+        break;
+    }
 }
 
 void app_main(void)

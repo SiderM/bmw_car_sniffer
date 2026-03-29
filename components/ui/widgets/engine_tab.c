@@ -166,7 +166,7 @@ void ui_widget_engine_tab_create(lv_obj_t *parent)
             }
             {
                 lv_obj_t *obj = lv_label_create(parent);
-                lv_label_bind_text(obj, &subjects.battery, "%s");
+                lv_label_bind_text(obj, &subjects.charge, "%s");
                 lv_obj_set_style_text_font(obj, &ui_font_ubuntu_36, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_center(obj);
             }

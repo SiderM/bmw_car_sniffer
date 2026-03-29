@@ -8,7 +8,7 @@ static char engine[32];
 static char check[32];
 static char oil_pressure[32];
 static char eml[32];
-static char battery[32];
+static char charge[32];
 static char coolant_level[32];
 static char oil_level[32];
 
@@ -44,7 +44,7 @@ void ui_subjects_init(void)
     lv_subject_init_string(&subjects.oil_pressure, oil_pressure, NULL, sizeof(oil_pressure), "---");
     lv_subject_init_int(&subjects.coolant_temp, 0);
     lv_subject_init_string(&subjects.eml, eml, NULL, sizeof(eml), "---");
-    lv_subject_init_string(&subjects.battery, battery, NULL, sizeof(battery), "---");
+    lv_subject_init_string(&subjects.charge, charge, NULL, sizeof(charge), "---");
     lv_subject_init_string(&subjects.coolant_level, coolant_level, NULL, sizeof(coolant_level), "---");
     lv_subject_init_string(&subjects.oil_level, oil_level, NULL, sizeof(oil_level), "---");
     lv_subject_init_int(&subjects.fuel_liters, 0);

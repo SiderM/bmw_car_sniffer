@@ -8,6 +8,7 @@
 #include "driver/gpio.h"
 #include "esp_twai.h"
 #include "esp_twai_onchip.h"
+#include "can_defs.h"
 
 typedef struct
 {
