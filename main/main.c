@@ -5,8 +5,8 @@
 
 static void kbus_on_recv(const kbus_frame_t *frame)
 {
-    ESP_LOGI("KBUS_RX", "SRC: 0x%02X LEN: 0x%02X DST: 0x%02X CMD: 0x%02X CRC: 0x%02X", frame->src, frame->len, frame->dst, frame->cmd, frame->crc);
-    ESP_LOG_BUFFER_HEX("KBUS_RX", frame->data, frame->data_len);
+    // ESP_LOGI("KBUS_RX", "SRC: 0x%02X LEN: 0x%02X DST: 0x%02X CMD: 0x%02X CRC: 0x%02X", frame->src, frame->len, frame->dst, frame->cmd, frame->crc);
+    // ESP_LOG_BUFFER_HEX("KBUS_RX", frame->data, frame->data_len);
 
     switch (frame->cmd)
     {
@@ -33,9 +33,9 @@ static void kbus_on_recv(const kbus_frame_t *frame)
     case KBUS_CMD_SENSORS:
         esp_lv_adapter_lock(-1);
         lv_subject_copy_string(&subjects.handbreak, (frame->data[0] & HANDBRAKE) ? "Вкл." : "Выкл.");
-        lv_subject_copy_string(&subjects.oil_pressure, (frame->data[0] & OIL_PRESSURE) ? "Норма" : "Нет");
-        lv_subject_copy_string(&subjects.break_pads, (frame->data[0] & BRAKE_PADS) ? "Норма" : "Износ");
-        lv_subject_copy_string(&subjects.transmission, (frame->data[0] & TRANSMISSION) ? "Норма" : "Ошибка");
+        lv_subject_copy_string(&subjects.oil_pressure, (frame->data[0] & OIL_PRESSURE) ? "Нет" : "Есть");
+        lv_subject_copy_string(&subjects.break_pads, (frame->data[0] & BRAKE_PADS) ? "Износ" : "Норма");
+        lv_subject_copy_string(&subjects.transmission, (frame->data[0] & TRANSMISSION) ? "Ошибка" : "Норма");
         lv_subject_copy_string(&subjects.engine, (frame->data[1] & ENGINE) ? "Работает" : "Выкл.");
 
         if (frame->data[1] & GEAR_PARK)
@@ -94,6 +94,7 @@ static void kbus_on_recv(const kbus_frame_t *frame)
         esp_lv_adapter_unlock();
         break;
     case KBUS_CMD_CLUSTER_INDICATORS:
+        esp_lv_adapter_lock(-1);
         lv_subject_copy_string(&subjects.fog_rear, (frame->data[0] & FOG_REAR) ? "Вкл." : "Выкл.");
         lv_subject_copy_string(&subjects.fog_front, (frame->data[0] & FOG_FRONT) ? "Вкл." : "Выкл.");
         lv_subject_copy_string(&subjects.beam_high, (frame->data[0] & BEAM_HIGH) ? "Вкл." : "Выкл.");
@@ -123,8 +124,8 @@ static void kbus_on_recv(const kbus_frame_t *frame)
 
 static void can_on_recv(const can_frame_t *frame)
 {
-    ESP_LOGI("CAN_RX", "ID: 0x%03X", frame->id);
-    ESP_LOG_BUFFER_HEX("CAN_RX", frame->data, frame->data_len);
+    // ESP_LOGI("CAN_RX", "ID: 0x%03X", frame->id);
+    // ESP_LOG_BUFFER_HEX("CAN_RX", frame->data, frame->data_len);
 
     switch (frame->id)
     {

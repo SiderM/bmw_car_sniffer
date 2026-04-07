@@ -212,6 +212,7 @@ static void uart_task(void *args)
                 break;
             }
         }
+        // vTaskDelay(pdMS_TO_TICKS(10));
     }
     free(dtmp);
     dtmp = NULL;
