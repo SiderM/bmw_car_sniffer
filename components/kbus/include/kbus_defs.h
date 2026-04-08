@@ -30,7 +30,7 @@
 #define GEAR_NEUTRAL 0x70
 #define GEAR_DRIVE 0x80
 #define GEAR_FIRST 0x20
-#define GEAR_SECOND 0x60
+#define GEAR_SECOND 0x40
 #define GEAR_THIRD 0xD0
 #define GEAR_FOURTH 0xC0
 #define GEAR_FIFTH 0xE0

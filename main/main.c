@@ -87,7 +87,7 @@ static void kbus_on_recv(const kbus_frame_t *frame)
         break;
     case KBUS_CMD_ODOMETER:
         esp_lv_adapter_lock(-1);
-        lv_subject_set_int(&subjects.mileage, (frame->data[2] * 655536) + (frame->data[1] * 256) + frame->data[0]);
+        lv_subject_set_int(&subjects.mileage, (frame->data[2] * 65536) + (frame->data[1] * 256) + frame->data[0]);
         esp_lv_adapter_unlock();
         break;
     case KBUS_CMD_TEMPERATURE:
