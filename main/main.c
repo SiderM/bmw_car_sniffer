@@ -1,3 +1,4 @@
+#include <math.h>
 #include "display.h"
 #include "kbus.h"
 #include "can.h"
@@ -132,10 +133,9 @@ static void can_on_recv(const can_frame_t *frame)
     case CAN_ID_ASC1:
         uint16_t speed_combined = (uint16_t)frame->data[2] << 8 | frame->data[1];
         uint16_t speed_raw = (speed_combined >> 4) & 0x0FFF;
-        // float speed_kmh = speed_raw / 8.0f;
+        float speed_kmh = speed_raw / 8.0f;
         esp_lv_adapter_lock(-1);
-        // lv_subject_set_int(&subjects.speed, (int)speed_kmh);
-        lv_subject_set_int(&subjects.speed, speed_raw);
+        lv_subject_set_int(&subjects.speed, (int)round(speed_kmh));
         esp_lv_adapter_unlock();
         break;
     case CAN_ID_SWS1:

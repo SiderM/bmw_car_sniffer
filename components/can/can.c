@@ -88,7 +88,6 @@ static void twai_task(void *args)
                 can_handle.on_recv(&frame);
             }
         }
-        // vTaskDelay(pdMS_TO_TICKS(10));
     }
     vTaskDelete(NULL);
 }
