@@ -25,6 +25,7 @@
 #define TRANSMISSION 0x10
 // Byte 1
 #define ENGINE 0x01
+#define DOOR 0x02
 #define GEAR_PARK 0xB0
 #define GEAR_REVERSE 0x10
 #define GEAR_NEUTRAL 0x70
@@ -47,6 +48,8 @@
 #define BEAM_HIGH 0x04
 #define BEAM_LOW 0x02
 #define PARKING 0x01
+#define TURN_LEFT 0x20
+#define TURN_RIGHT 0x40
 
 /* ------------------ 0x7a Door/Lid Status ------------------ */
 // Byte 0

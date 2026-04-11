@@ -9,12 +9,6 @@ static void kbus_on_recv(const kbus_frame_t *frame)
     // ESP_LOGI("KBUS_RX", "SRC: 0x%02X LEN: 0x%02X DST: 0x%02X CMD: 0x%02X CRC: 0x%02X", frame->src, frame->len, frame->dst, frame->cmd, frame->crc);
     // ESP_LOG_BUFFER_HEX("KBUS_RX", frame->data, frame->data_len);
 
-    if (frame->cmd == KBUS_CMD_SENSORS)
-    {
-        ESP_LOGI("KBUS_RX", "SRC: 0x%02X LEN: 0x%02X DST: 0x%02X CMD: 0x%02X CRC: 0x%02X", frame->src, frame->len, frame->dst, frame->cmd, frame->crc);
-        ESP_LOG_BUFFER_HEX("KBUS_RX", frame->data, frame->data_len);
-    }
-
     switch (frame->cmd)
     {
     case KBUS_CMD_IGNITION:
@@ -47,39 +41,39 @@ static void kbus_on_recv(const kbus_frame_t *frame)
 
         uint8_t gear = frame->data[1];
 
-        if ((gear == GEAR_PARK) || (gear == GEAR_PARK + ENGINE))
+        if ((gear == GEAR_PARK) || (gear == GEAR_PARK + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "P");
         }
-        else if ((gear == GEAR_REVERSE) || (gear == GEAR_REVERSE + ENGINE))
+        else if ((gear == GEAR_REVERSE) || (gear == GEAR_REVERSE + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "R");
         }
-        else if ((gear == GEAR_NEUTRAL) || (gear == GEAR_NEUTRAL + ENGINE))
+        else if ((gear == GEAR_NEUTRAL) || (gear == GEAR_NEUTRAL + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "N");
         }
-        else if ((gear == GEAR_DRIVE) || (gear == GEAR_DRIVE + ENGINE))
+        else if ((gear == GEAR_DRIVE) || (gear == GEAR_DRIVE + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "D");
         }
-        else if ((gear == GEAR_FIRST) || (gear == GEAR_FIRST + ENGINE))
+        else if ((gear == GEAR_FIRST) || (gear == GEAR_FIRST + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "M1");
         }
-        else if ((gear == GEAR_SECOND) || (gear == GEAR_SECOND + ENGINE))
+        else if ((gear == GEAR_SECOND) || (gear == GEAR_SECOND + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "M2");
         }
-        else if ((gear == GEAR_THIRD) || (gear == GEAR_THIRD + ENGINE))
+        else if ((gear == GEAR_THIRD) || (gear == GEAR_THIRD + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "M3");
         }
-        else if ((gear == GEAR_FOURTH) || (gear == GEAR_FOURTH + ENGINE))
+        else if ((gear == GEAR_FOURTH) || (gear == GEAR_FOURTH + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "M4");
         }
-        else if ((gear == GEAR_FIFTH) || (gear == GEAR_FIFTH + ENGINE))
+        else if ((gear == GEAR_FIFTH) || (gear == GEAR_FIFTH + ENGINE) || (gear == GEAR_PARK + ENGINE + DOOR))
         {
             lv_subject_copy_string(&subjects.gear, "M5");
         }
@@ -109,6 +103,8 @@ static void kbus_on_recv(const kbus_frame_t *frame)
         lv_subject_copy_string(&subjects.beam_high, (frame->data[0] & BEAM_HIGH) ? "Вкл." : "Выкл.");
         lv_subject_copy_string(&subjects.beam_low, (frame->data[0] & BEAM_LOW) ? "Вкл." : "Выкл.");
         lv_subject_copy_string(&subjects.parking, (frame->data[0] & PARKING) ? "Вкл." : "Выкл.");
+        lv_subject_copy_string(&subjects.turn_left, (frame->data[0] & TURN_LEFT) ? "Вкл." : "Выкл.");
+        lv_subject_copy_string(&subjects.turn_right, (frame->data[0] & TURN_RIGHT) ? "Вкл." : "Выкл.");
         esp_lv_adapter_unlock();
         break;
     case KBUS_CMD_INSTRUMENT_BACKLIGHT:

@@ -41,6 +41,8 @@ typedef struct
     lv_subject_t fog_front;
     lv_subject_t fog_rear;
     lv_subject_t ambient;
+    lv_subject_t turn_left;
+    lv_subject_t turn_right;
 } subjects_t;
 
 extern subjects_t subjects;

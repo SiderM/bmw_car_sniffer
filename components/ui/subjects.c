@@ -33,6 +33,8 @@ static char beam_low[32];
 static char beam_high[32];
 static char fog_front[32];
 static char fog_rear[32];
+static char turn_left[32];
+static char turn_right[32];
 
 void ui_subjects_init(void)
 {
@@ -74,4 +76,6 @@ void ui_subjects_init(void)
     lv_subject_init_string(&subjects.fog_front, fog_front, NULL, sizeof(fog_front), "---");
     lv_subject_init_string(&subjects.fog_rear, fog_rear, NULL, sizeof(fog_rear), "---");
     lv_subject_init_int(&subjects.ambient, 0);
+    lv_subject_init_string(&subjects.turn_left, turn_left, NULL, sizeof(turn_left), "---");
+    lv_subject_init_string(&subjects.turn_right, turn_right, NULL, sizeof(turn_right), "---");
 }
