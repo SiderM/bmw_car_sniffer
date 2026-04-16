@@ -116,7 +116,6 @@ static void kbus_on_recv(const kbus_frame_t *frame)
         lv_subject_copy_string(&subjects.door_passenger, (frame->data[0] & DOOR_PASSENGER) ? "Открыта" : "Закрыта");
         lv_subject_copy_string(&subjects.door_rear_lh, (frame->data[0] & DOOR_REAR_LH) ? "Открыта" : "Закрыта");
         lv_subject_copy_string(&subjects.door_rear_rh, (frame->data[0] & DOOR_REAR_RH) ? "Открыта" : "Закрыта");
-
         lv_subject_copy_string(&subjects.rear_lid, (frame->data[1] & REAR_LID) ? "Открыт" : "Закрыт");
         lv_subject_copy_string(&subjects.front_lid, (frame->data[1] & FRONT_LID) ? "Открыт" : "Закрыт");
         esp_lv_adapter_unlock();
